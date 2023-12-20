@@ -9,8 +9,6 @@ response=$(blhost -p /dev/ttyACM0 -j -- read-memory 0x8000000 1)
 
 status=$(echo "$response" | jq -r '.status.value')
 
-echo ""
-echo "$status"
 # The following was taken as a mixture from the UM11147 and some forum posts.
 # The chapter in the user manual is 41.1.3.1
 
@@ -50,7 +48,9 @@ if [ "$status" != 0 ]; then
 #   Status override         = 0
 #   Dummy cycles            = 0
     blhost -p /dev/ttyACM0 -j -- fill-memory 0x1c004 0x4 0x20000000
+#    blhost -p /dev/ttyACM0 -j -- fill-memory 0x1c004 0x4 0xf000000f
 
+#    blhost -p /dev/ttyACM0 -j -- configure-memory 0x09 0x1c004
     blhost -p /dev/ttyACM0 -j -- configure-memory 0x09 0x1c000
 
 # mem id 0x09 is not needed here.

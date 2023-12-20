@@ -1,0 +1,98 @@
+##########################################################################################################␝
+Write image - operation started at 2023-12-19 17:27:34␝
+##########################################################################################################␝
+The following fuses status was detected:␝
+Fuse request: BOOT_CFG[0] |= 0x0 (mask: 0x300000); lock-after-write; current value=0x0; status=MATCHES␝
+Write script generated: write_image_lnx.sh␝
+Write script generated: write_image_win.bat␝
+Write script generated: write_image_mac.sh␝
+Executing script /home/mrichardson/secure_provisioning/write_image_lnx.sh␝
+### SCRIPT: Writing image: /home/mrichardson/secure_provisioning/write_image_lnx.sh␝
+### Parse input arguments ###
+### Check connection ###
+/opt/nxp/MCUX_Provi_v7/bin/tools/spsdk /opt/nxp/MCUX_Provi_v7/bin
+/opt/nxp/MCUX_Provi_v7/bin/tools/spsdk/blhost -t 2000 -p /dev/ttyACM0,921600 -j -- get-property 1 0
+/opt/nxp/MCUX_Provi_v7/bin
+{
+   "command": "get-property",
+   "response": [
+      1258487808
+   ],
+   "status": {
+      "description": "0 (0x0) Success.",
+      "value": 0
+   }
+}
+blhost succeeded
+### Erase flash - only if the memory is already configured ###
+/opt/nxp/MCUX_Provi_v7/bin/tools/spsdk /opt/nxp/MCUX_Provi_v7/bin
+/opt/nxp/MCUX_Provi_v7/bin/tools/spsdk/blhost -t 50224 -p /dev/ttyACM0,921600 -j -- flash-erase-region 0x08000000 22444 9
+WARNING:spsdk.mboot.mcuboot:Note: memoryId is not required when accessing mapped external memory (172ms since start, mcuboot.py:1454)
+/opt/nxp/MCUX_Provi_v7/bin
+{
+   "command": "flash-erase-region",
+   "response": [],
+   "status": {
+      "description": "0 (0x0) Success.",
+      "value": 0
+   }
+}
+blhost succeeded
+### Configure target memory ###
+/opt/nxp/MCUX_Provi_v7/bin/tools/spsdk /opt/nxp/MCUX_Provi_v7/bin
+/opt/nxp/MCUX_Provi_v7/bin/tools/spsdk/blhost -t 5000 -p /dev/ttyACM0,921600 -j -- fill-memory 0x10c000 4 0xF000000F
+/opt/nxp/MCUX_Provi_v7/bin
+{
+   "command": "fill-memory",
+   "response": [],
+   "status": {
+      "description": "0 (0x0) Success.",
+      "value": 0
+   }
+}
+blhost succeeded
+/opt/nxp/MCUX_Provi_v7/bin/tools/spsdk /opt/nxp/MCUX_Provi_v7/bin
+/opt/nxp/MCUX_Provi_v7/bin/tools/spsdk/blhost -t 5000 -p /dev/ttyACM0,921600 -j -- configure-memory 9 0x10c000
+/opt/nxp/MCUX_Provi_v7/bin
+{
+   "command": "configure-memory",
+   "response": [],
+   "status": {
+      "description": "0 (0x0) Success.",
+      "value": 0
+   }
+}
+blhost succeeded
+### Write image version for dual boot image 0 ###
+/opt/nxp/MCUX_Provi_v7/bin/tools/spsdk /opt/nxp/MCUX_Provi_v7/bin
+/opt/nxp/MCUX_Provi_v7/bin/tools/spsdk/blhost -t 5000 -p /dev/ttyACM0,921600 -j -- write-memory 0x08000600 /home/mrichardson/secure_provisioning/gen_sb/image_version.bin 0
+/opt/nxp/MCUX_Provi_v7/bin
+{
+   "command": "write-memory",
+   "response": [
+      4
+   ],
+   "status": {
+      "description": "0 (0x0) Success.",
+      "value": 0
+   }
+}
+blhost succeeded
+### Write unsecured image ###
+/opt/nxp/MCUX_Provi_v7/bin/tools/spsdk /opt/nxp/MCUX_Provi_v7/bin
+/opt/nxp/MCUX_Provi_v7/bin/tools/spsdk/blhost -t 5000 -p /dev/ttyACM0,921600 -j -- write-memory 0x08001000 /home/mrichardson/secure_provisioning/bootable_images/evkmimxrt685_led_blinky_ext_flash.bin 0
+/opt/nxp/MCUX_Provi_v7/bin
+{
+   "command": "write-memory",
+   "response": [
+      18348
+   ],
+   "status": {
+      "description": "0 (0x0) Success.",
+      "value": 0
+   }
+}
+blhost succeeded␝
+### RESULT of the script `Writing image`: SUCCESS (return code = [0]SUCCESS)␝
+Status of the operation: SUCCESS: Writing image␝
+Executing script /home/mrichardson/secure_provisioning/gen_scripts/transform_image.sh␝
